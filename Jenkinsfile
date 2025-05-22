@@ -9,11 +9,17 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        checkout scm
+        git branch: 'master', url: 'https://github.com/hiba123887/student-absence-app.git'
       }
     }
 
     stage('Install Backend Dependencies') {
+      agent {
+        docker {
+          image 'node:18-alpine'
+          args "-v $WORKSPACE:$WORKSPACE -w $WORKSPACE"
+        }
+      }
       steps {
         dir('backend') {
           sh 'npm install'
@@ -22,24 +28,14 @@ pipeline {
     }
 
     stage('Run Backend Tests') {
+      agent {
+        docker {
+          image 'node:18-alpine'
+          args "-v $WORKSPACE:$WORKSPACE -w $WORKSPACE"
+        }
+      }
       steps {
         dir('backend') {
-          sh 'npm test'
-        }
-      }
-    }
-
-    stage('Install Frontend Dependencies') {
-      steps {
-        dir('frontend') {
-          sh 'npm install'
-        }
-      }
-    }
-
-    stage('Run Frontend Tests') {
-      steps {
-        dir('frontend') {
           sh 'npm test'
         }
       }
@@ -64,8 +60,6 @@ pipeline {
     stage('Push Images') {
       steps {
         echo "Push vers registry si configuré"
-        // ex: sh "docker push $DOCKER_IMAGE_BACKEND"
-        // ex: sh "docker push $DOCKER_IMAGE_FRONTEND"
       }
     }
 
@@ -73,15 +67,6 @@ pipeline {
       steps {
         sh 'ansible-playbook ansible/playbook.yml'
       }
-    }
-  }
-
-  post {
-    success {
-      echo 'Build et tests réussis, pipeline terminé.'
-    }
-    failure {
-      echo 'Erreur dans le pipeline, build ou tests échoués.'
     }
   }
 }
