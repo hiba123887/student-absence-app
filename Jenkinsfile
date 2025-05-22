@@ -13,13 +13,6 @@ pipeline {
       }
     }
 
-    stage('Install Backend Dependencies') {
-      agent {
-        docker {
-          image 'node:18-alpine'
-          args "-v ${WORKSPACE}:${WORKSPACE} -w ${WORKSPACE}"
-        }
-      }
       steps {
         dir('backend') {
           sh 'npm install'
@@ -27,13 +20,7 @@ pipeline {
       }
     }
 
-    stage('Run Backend Tests') {
-      agent {
-        docker {
-          image 'node:18-alpine'
-          args "-v ${WORKSPACE}:${WORKSPACE} -w ${WORKSPACE}"
-        }
-      }
+  
       steps {
         dir('backend') {
           sh 'npm test'
