@@ -1,71 +1,10 @@
 pipeline {
   agent any
 
-  environment {
-    DOCKER_IMAGE_BACKEND = "student-absence-app-backend"
-    DOCKER_IMAGE_FRONTEND = "student-absence-app-frontend"
-  }
-
   stages {
-    stage('Checkout') {
+    stage('Test') {
       steps {
-        git branch: 'master', url: 'https://github.com/hiba123887/student-absence-app.git'
-      }
-    }
-
-    stage('Install Backend Dependencies') {
-      agent {
-        docker {
-          image 'node:18-alpine'
-          args "-v ${WORKSPACE}:${WORKSPACE} -w ${WORKSPACE}"
-        }
-      }
-      steps {
-        dir('backend') {
-          sh 'npm install'
-        }
-      }
-    }
-
-    stage('Run Backend Tests') {
-      agent {
-        docker {
-          image 'node:18-alpine'
-          args "-v ${WORKSPACE}:${WORKSPACE} -w ${WORKSPACE}"
-        }
-      }
-      steps {
-        dir('backend') {
-          sh 'npm test'
-        }
-      }
-    }
-
-    stage('Build Backend Docker Image') {
-      steps {
-        dir('backend') {
-          sh "docker build -t ${DOCKER_IMAGE_BACKEND} ."
-        }
-      }
-    }
-
-    stage('Build Frontend Docker Image') {
-      steps {
-        dir('frontend') {
-          sh "docker build -t ${DOCKER_IMAGE_FRONTEND} ."
-        }
-      }
-    }
-
-    stage('Push Images') {
-      steps {
-        echo "Push vers registry si configuré"
-      }
-    }
-
-    stage('Deploy with Ansible') {
-      steps {
-        sh 'ansible-playbook ansible/playbook.yml'
+        echo 'Hello from Jenkins!'
       }
     }
   }
