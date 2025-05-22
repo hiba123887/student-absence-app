@@ -1,0 +1,47 @@
+# === Node.js dependencies ===
+**/node_modules/
+
+# === Environment files ===
+.env*
+.env*.local
+
+# === Logs and debug ===
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# === Expo ===
+**/.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# === Database ===
+*.sqlite
+
+# === Native (mobile) ===
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# === Metro ===
+.metro-health-check*
+
+# === macOS ===
+.DS_Store
+*.pem
+
+# === TypeScript ===
+*.tsbuildinfo
+
+# === Code coverage ===
+coverage/
+
+# === IDEs and editors ===
+.vscode/
+.idea/
