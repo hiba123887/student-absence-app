@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_IMAGE_BACKEND = "student-absence-backend"
-    DOCKER_IMAGE_FRONTEND = "student-absence-frontend"
+    DOCKER_IMAGE_BACKEND = "student-absence-app-backend"
+    DOCKER_IMAGE_FRONTEND = "student-absence-app-frontend"
   }
 
   stages {
@@ -13,6 +13,13 @@ pipeline {
       }
     }
 
+    stage('Install Backend Dependencies') {
+      agent {
+        docker {
+          image 'node:18-alpine'
+          args "-v $WORKSPACE:$WORKSPACE -w $WORKSPACE"
+        }
+      }
       steps {
         dir('backend') {
           sh 'npm install'
@@ -20,7 +27,13 @@ pipeline {
       }
     }
 
-  
+    stage('Run Backend Tests') {
+      agent {
+        docker {
+          image 'node:18-alpine'
+          args "-v $WORKSPACE:$WORKSPACE -w $WORKSPACE"
+        }
+      }
       steps {
         dir('backend') {
           sh 'npm test'
@@ -31,7 +44,7 @@ pipeline {
     stage('Build Backend Docker Image') {
       steps {
         dir('backend') {
-          sh "docker build -t ${DOCKER_IMAGE_BACKEND} ."
+          sh "docker build -t $DOCKER_IMAGE_BACKEND ."
         }
       }
     }
@@ -39,7 +52,7 @@ pipeline {
     stage('Build Frontend Docker Image') {
       steps {
         dir('frontend') {
-          sh "docker build -t ${DOCKER_IMAGE_FRONTEND} ."
+          sh "docker build -t $DOCKER_IMAGE_FRONTEND ."
         }
       }
     }
