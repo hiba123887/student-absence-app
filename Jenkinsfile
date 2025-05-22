@@ -17,7 +17,7 @@ pipeline {
       agent {
         docker {
           image 'node:18-alpine'
-          args "-v $WORKSPACE:$WORKSPACE -w $WORKSPACE"
+          args "-v ${WORKSPACE}:${WORKSPACE} -w ${WORKSPACE}"
         }
       }
       steps {
@@ -31,7 +31,7 @@ pipeline {
       agent {
         docker {
           image 'node:18-alpine'
-          args "-v $WORKSPACE:$WORKSPACE -w $WORKSPACE"
+          args "-v ${WORKSPACE}:${WORKSPACE} -w ${WORKSPACE}"
         }
       }
       steps {
@@ -44,7 +44,7 @@ pipeline {
     stage('Build Backend Docker Image') {
       steps {
         dir('backend') {
-          sh "docker build -t $DOCKER_IMAGE_BACKEND ."
+          sh "docker build -t ${DOCKER_IMAGE_BACKEND} ."
         }
       }
     }
@@ -52,7 +52,7 @@ pipeline {
     stage('Build Frontend Docker Image') {
       steps {
         dir('frontend') {
-          sh "docker build -t $DOCKER_IMAGE_FRONTEND ."
+          sh "docker build -t ${DOCKER_IMAGE_FRONTEND} ."
         }
       }
     }
