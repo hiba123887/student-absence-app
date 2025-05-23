@@ -1,9 +1,10 @@
 - name: Deploy to Kubernetes
-  hosts: all
-  become: yes
+  hosts: localhost
   tasks:
     - name: Apply Kubernetes configs
       shell: |
         kubectl apply -f k8s/namespace.yaml
         kubectl apply -f k8s/backend-deployment.yaml
         kubectl apply -f k8s/frontend-deployment.yaml
+      args:
+        chdir: /mnt/c/Users/HP/student-absence-app
