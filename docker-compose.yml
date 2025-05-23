@@ -1,6 +1,7 @@
 services:
   backend:
     build: ./backend
+    image: hiba7830/student-absence-app-backend:latest
     ports:
       - "3000:3000"
     environment:
@@ -12,6 +13,7 @@ services:
 
   frontend:
     build: ./frontend
+    image: hiba7830/student-absence-app-frontend:latest
     ports:
       - "19000:19000"  # Expo DevTools
       - "19001:19001"  # Expo React Native debugger
