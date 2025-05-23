@@ -70,9 +70,9 @@ pipeline {
       }
     }
 
-    stage('Build with Docker Compose') {
+    stage('Docker Compose') {
       steps {
-        sh 'docker-compose build'
+        sh 'docker compose build'
       }
     }
 
