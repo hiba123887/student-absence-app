@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_IMAGE_BACKEND = "student-absence-app-backend"
-    DOCKER_IMAGE_FRONTEND = "student-absence-app-frontend"
+    DOCKER_IMAGE_BACKEND = "hiba7830/student-absence-app-backend"
+    DOCKER_IMAGE_FRONTEND = "hiba7830/student-absence-app-frontend"
   }
 
   stages {
@@ -75,12 +75,18 @@ pipeline {
         sh 'docker-compose build'
       }
     }
-
-    stage('Push Images') {
+stage('Push Docker Hub') {
       steps {
-        echo "Push vers registry si configuré"
-        // Exemple :
-        // sh "docker-compose push"
+        withCredentials([usernamePassword(
+          credentialsId: 'dockerhub-credentials',
+          usernameVariable: 'DOCKER_USERNAME',
+          passwordVariable: 'DOCKER_PASSWORD'
+        )]) {
+          sh '''
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker-compose push
+          '''
+        }
       }
     }
 
