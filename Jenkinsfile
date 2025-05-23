@@ -71,16 +71,10 @@ pipeline {
     }
 
     stage('Docker Compose') {
-  steps {
-    sh '''
-      if ! command -v docker-compose &> /dev/null; then
-        curl -sL "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        chmod +x /usr/local/bin/docker-compose
-      fi
-      docker-compose build
-    '''
-  }
-}
+      steps {
+        sh 'docker-compose build'
+      }
+    }
 
     stage('Push Images') {
       steps {
