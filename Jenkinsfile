@@ -11,7 +11,6 @@ pipeline {
       steps {
         git branch: 'master', url: 'https://github.com/hiba123887/student-absence-app.git'
         sh 'ls -l'
-        
       }
     }
 
@@ -24,6 +23,20 @@ pipeline {
       }
       steps {
         dir('backend') {
+          sh 'npm install'
+        }
+      }
+    }
+
+    stage('Install Frontend Dependencies') {
+      agent {
+        docker {
+          image 'node:18-alpine'
+          args "-v $WORKSPACE:$WORKSPACE -w $WORKSPACE"
+        }
+      }
+      steps {
+        dir('frontend') {
           sh 'npm install'
         }
       }
@@ -43,28 +56,31 @@ pipeline {
       }
     }
 
-    stage('Build Backend Docker Image') {
+    stage('Run Frontend Tests') {
+      agent {
+        docker {
+          image 'node:18-alpine'
+          args "-v $WORKSPACE:$WORKSPACE -w $WORKSPACE"
+        }
+      }
       steps {
-        dir('backend') {
-          sh "docker build -t $DOCKER_IMAGE_BACKEND ."
+        dir('frontend') {
+          sh 'npm test'
         }
       }
     }
 
-    stage('Build Frontend Docker Image') {
+    stage('Build with Docker Compose') {
       steps {
-        dir('frontend') {
-          sh "docker build -t $DOCKER_IMAGE_FRONTEND -f Dockerfile ."
-        }
+        sh 'docker-compose build'
       }
     }
 
     stage('Push Images') {
       steps {
         echo "Push vers registry si configuré"
-        // Exemples :
-        // sh "docker tag $DOCKER_IMAGE_BACKEND your-registry/$DOCKER_IMAGE_BACKEND"
-        // sh "docker push your-registry/$DOCKER_IMAGE_BACKEND"
+        // Exemple :
+        // sh "docker-compose push"
       }
     }
 
