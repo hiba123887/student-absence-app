@@ -91,9 +91,9 @@ stage('Push Docker Hub') {
 }
 
     stage('Deploy with Ansible') {
-      steps {
-        sh 'ansible-playbook ansible/playbook.yml'
-      }
-    }
+  steps {
+    sh 'ansible-playbook -i ansible/inventory/dev ansible/playbook.yml'
+  }
+}
   }
 }
