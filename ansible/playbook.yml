@@ -1,7 +1,7 @@
-- name: Apply Kubernetes configs
-  shell: |
+-name: Apply Kubernetes configs
+shell: |
     kubectl apply -f k8s/namespace.yaml
     kubectl apply -f k8s/backend-deployment.yaml
     kubectl apply -f k8s/frontend-deployment.yaml
-  args:
+args:
     chdir: /var/jenkins_home/workspace/student-absence-app
