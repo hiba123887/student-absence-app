@@ -8,7 +8,7 @@
 
     - name: Apply Kubernetes manifests
       shell: |
-        export KUBECONFIG=/tmp/kubeconfig
-        kubectl apply --validate=false -f k8s/namespace.yaml
-        kubectl apply -f k8s/backend-deployment.yaml
-        kubectl apply -f k8s/frontend-deployment.yaml
+          export KUBECONFIG=/tmp/kubeconfig
+          kubectl apply --validate=false -f "{{ playbook_dir }}/../k8s/namespace.yaml"
+          kubectl apply -f "{{ playbook_dir }}/../k8s/backend-deployment.yaml"
+          kubectl apply -f "{{ playbook_dir }}/../k8s/frontend-deployment.yaml"
