@@ -92,7 +92,7 @@ stage('Push Docker Hub') {
 
     stage('Deploy with Ansible') {
   steps {
-    sh 'ansible-playbook -i /workspace/ansible/inventory/dev /workspace/ansible/playbook.yml'
+    sh 'ansible-playbook -i ansible/inventory/dev ansible/playbook.yml'
   }
 }
   }
