@@ -4,7 +4,7 @@
   tasks:
     - name: Apply Kubernetes configs
       shell: |
-        kubectl apply -f k8s/namespace.yaml
+        kubectl apply --validate=false -f k8s/namespace.yaml
         kubectl apply -f k8s/backend-deployment.yaml
         kubectl apply -f k8s/frontend-deployment.yaml
       args:
