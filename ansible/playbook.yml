@@ -1,11 +1,14 @@
-- name: Deploy to Kubernetes
-  hosts: localhost
-  connection: local
+- hosts: localhost
   tasks:
-    - name: Apply Kubernetes configs
+    - name: Copy kubeconfig from Jenkins to a temp file
+      copy:
+        content: "{{ lookup('file', lookup('env','KUBECONFIG')) }}"
+        dest: /tmp/kubeconfig
+        mode: '0600'
+
+    - name: Apply Kubernetes manifests
       shell: |
+        export KUBECONFIG=/tmp/kubeconfig
         kubectl apply --validate=false -f k8s/namespace.yaml
         kubectl apply -f k8s/backend-deployment.yaml
         kubectl apply -f k8s/frontend-deployment.yaml
-      args:
-        chdir: "{{ playbook_dir }}/.."

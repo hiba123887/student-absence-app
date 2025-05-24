@@ -92,7 +92,9 @@ stage('Push Docker Hub') {
 
     stage('Deploy with Ansible') {
   steps {
-    sh 'cd $WORKSPACE && ansible-playbook -i ansible/inventory/dev ansible/playbook.yml'
+    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+  sh 'ansible-playbook -i ansible/inventory/dev ansible/playbook.yml'
+}
 
   }
 }
